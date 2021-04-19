@@ -1,0 +1,3 @@
+include ':module01', ':module02'
+include ':app'
+rootProject.name = "MavenPackage"

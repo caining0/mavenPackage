@@ -1,0 +1,72 @@
+apply plugin: 'maven'
+
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: maven.address) { authentication(userName: maven.username, password: maven.password) }
+            pom.groupId = maven.MAVENGROUPID
+            pom.artifactId = ARTIFACT
+            pom.version = maven.appLibVersion
+            pom.packaging = 'aar'
+            pom.project {
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+            }
+
+
+
+
+
+
+           pom.withXml {
+                def childs = asNode().children()
+                childs.each {
+                    child ->
+                        print("childName->"+child.name().toString()+"\n")
+                        if (child.name().toString().contains('dependencies')) {
+                            child.children().each {
+                                print("dependencies->"+it.text().toString()+"\n")
+                                if (it.text().toString().contains("unspecified")) {
+                                    def iterator = it.children().iterator()
+                                    def remove = false
+                                    while (iterator.hasNext()) {
+                                        def node = iterator.next()
+                                        if (node.name().toString().contains('groupId')) {
+                                            iterator.remove()
+                                        }
+                                        if (node.name().toString().contains('version')) {
+                                            iterator.remove()
+                                            remove = true
+                                        }
+                                    }
+                                    if (remove) {
+                                        it.appendNode('version', maven.appLibVersion)
+                                        it.appendNode('groupId', maven.MAVENGROUPID)
+                                    }
+                                    print("\n return ->"+it.text().toString()+"\n")
+                                }
+                            }
+
+                        }
+                }
+            }
+        }
+    }
+
+
+}
+
+
+
+
+
+
+private List changeName() {
+
+}

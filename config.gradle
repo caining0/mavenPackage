@@ -1,0 +1,11 @@
+ext {
+    maven = [
+            address         : "http://localhost:8081/repository/maven-releases/",//maven 仓库地址
+            username        : "admin",
+            password        : "123456",
+            appLibVersion   : "1.1.4",//打包版本号
+            buildMAVEN      : true ,//是否打开upload功能
+            MAVENGROUPID      : "com.cnn.sdk"//打包groupId 这里统一设置，如需要不同，请module中单独设置
+    ]
+
+}
