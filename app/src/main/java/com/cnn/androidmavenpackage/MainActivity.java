@@ -13,6 +13,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void test(){
-
+        long a=1;
     }
 }
